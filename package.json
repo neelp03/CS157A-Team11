@@ -1,0 +1,24 @@
+{
+  "name": "cs157a-team11",
+  "version": "1.0.0",
+  "description": "CS157A DBMS Project",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neelp03/CS157A-Team11.git"
+  },
+  "author": "Neel Patel, Patricia Saito, Danny Garcia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/neelp03/CS157A-Team11/issues"
+  },
+  "homepage": "https://github.com/neelp03/CS157A-Team11#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mysql": "^2.18.1"
+  }
+}
