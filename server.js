@@ -3,6 +3,7 @@ const cors = require("cors");
 
 const app = express();
 
+// basically a whitelist of ports that can access the api
 var corsOptions = {
   origin: "http://localhost:8081"
 };
