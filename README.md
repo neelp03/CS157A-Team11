@@ -20,23 +20,23 @@ Welcome to the `UniRide` project! This guide will walk you through the steps to 
 2. **Setting up the Database**
 
 - Make sure MySQL is running.
-- Execute the provided SQL script to set up the schema and initial data.
+- copy paste the scripts inside each file into workbench and execute
+  OR
+- Run this command (make sure path is correct):
   ```
   mysql -u cs157a -p < schema.sql
   mysql -u cs157a -p < data.sql
   ```
 
-3. **Configure Application Properties**
-
-Navigate to `src/main/resources` and update `application.properties` or equivalent file with your database credentials and any other relevant configurations.
-
-4. **Build and Run the Project**
+3. **Build and Run the Project**
 
 Open the project in IntelliJ IDEA Ultimate:
 - Navigate to `File -> Open` and select the `UniRide` project directory.
 - Wait for IntelliJ to import the project and download the necessary dependencies.
 - Build the project using the `Build -> Build Project` option.
 - To run, right-click on the main class in the project explorer and select `Run`.
+  - opens a services side view where the web app logs and other services can be seen
+  - tomcat should be there and running
 
 5. **Accessing the Application**
 
