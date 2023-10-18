@@ -2,7 +2,7 @@ package com.example.models;
 
 import java.util.Objects;
 
-public class User {
+public class Users {
 
     private int userId;
     private String email;
@@ -10,12 +10,12 @@ public class User {
     private String password;
     private String role;
     private int universityId;
-
+    private String universityName;
     // Default Constructor
-    public User() {}
+    public Users() {}
 
     // Constructor with all attributes
-    public User(int userId, String email, String name, String password, String role, int universityId) {
+    public Users(int userId, String email, String name, String password, String role, int universityId) {
         this.userId = userId;
         this.email = email;
         this.name = name;
@@ -73,14 +73,22 @@ public class User {
         this.universityId = universityId;
     }
 
+    public String getUniversityName() {
+        return universityName;
+    }
+
+    public void setUniversityName(String universityName) {
+        this.universityName = universityName;
+    }
+
     // equals(), hashCode() and toString() methods
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return userId == user.userId;
+        Users users = (Users) o;
+        return userId == users.userId;
     }
 
     @Override

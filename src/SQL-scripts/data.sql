@@ -79,7 +79,7 @@ VALUES
     (1, 7),
     (3, 5);
 
--- Inserting user preferences
+-- Inserting users preferences
 INSERT INTO UserPreferences (UserId, Pref_Name, Pref_Value)
 VALUES
     (1, "Language", "English"),
