@@ -1,7 +1,5 @@
 # UniRide Project Setup
 
-Welcome to the `UniRide` project! This guide will walk you through the steps to set up and run the project locally.
-
 ## Prerequisites
 
 - **IntelliJ Ultimate Edition**: Auto Installs Maven and Open JDK 21
