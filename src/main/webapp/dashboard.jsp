@@ -9,11 +9,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-</head>
+    <link rel="stylesheet" type="text/css" href="css/styles.css"></head>
 <body>
 <jsp:include page="navbar.jsp" />
 <!-- Welcome Message -->
-<h1>Welcome to UniRide Dashboard!</h1>
+<h1>UniRide - Dashboard</h1>
 
 <!-- Search Bar -->
 <form action="dashboard.jsp" method="GET">

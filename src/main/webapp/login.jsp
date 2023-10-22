@@ -2,7 +2,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login</title>
+    <title>UniRide - Login</title>
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
 <body>
 <jsp:include page="navbar.jsp" />

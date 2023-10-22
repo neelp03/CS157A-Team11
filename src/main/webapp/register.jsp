@@ -5,7 +5,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Register</title>
+    <title>UniRide - Register</title>
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
 <body>
 <jsp:include page="navbar.jsp" />

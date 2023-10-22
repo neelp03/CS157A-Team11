@@ -1,33 +1,28 @@
+<%@ page import="com.example.models.Users" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <style>
-        .navbar {
-            background-color: #333;
-            overflow: hidden;
-        }
-
-        .navbar a {
-            float: left;
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-        }
-
-        .navbar a:hover {
-            background-color: #ddd;
-            color: black;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
 <body>
 
 <div class="navbar">
-    <a href="register.jsp">Register</a>
-    <a href="login.jsp">Login</a>
-    <a href="dashboard.jsp">Dashboard</a>
+    <ul>
+        <li><a href="home.jsp">Home</a></li>
+
+        <%
+            Users loggedInUser = (Users) session.getAttribute("loggedInUser");
+        %>
+
+        <% if (loggedInUser == null) { %>
+        <li><a href="register.jsp">Register</a></li>
+        <li><a href="login.jsp">Login</a></li>
+        <% } else { %>
+        <li>Welcome, <%= loggedInUser.getName() %>!</li>
+        <li><a href="dashboard.jsp">Dashboard</a></li>
+        <li><a href="logout.jsp">Logout</a></li>
+        <% } %>
+    </ul>
 </div>
 
 </body>
