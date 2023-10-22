@@ -31,7 +31,7 @@
 %>
 
 <h2>Search Results:</h2>
-<table border="1">
+<table border="1" class="dashboard-table">
     <thead>
     <tr>
         <th>Name</th>

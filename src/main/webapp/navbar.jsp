@@ -18,7 +18,7 @@
         <li><a href="register.jsp">Register</a></li>
         <li><a href="login.jsp">Login</a></li>
         <% } else { %>
-        <li>Welcome, <%= loggedInUser.getName() %>!</li>
+        <li class="welcome-message">Welcome, <%= loggedInUser.getName() %>!</li>
         <li><a href="dashboard.jsp">Dashboard</a></li>
         <li><a href="logout.jsp">Logout</a></li>
         <% } %>

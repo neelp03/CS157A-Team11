@@ -23,9 +23,8 @@
     <div>
         <input type="submit" value="Login">
     </div>
+    <p>If you don't have an account, <a href="register.jsp">register here</a>.</p>
 </form>
-
-<p>If you don't have an account, <a href="register.jsp">register here</a>.</p>
 
 </body>
 </html>

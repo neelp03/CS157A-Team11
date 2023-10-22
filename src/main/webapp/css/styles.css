@@ -1,8 +1,9 @@
+/* Global Styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
 }
 
 .container {
@@ -11,52 +12,30 @@ body {
     overflow: hidden;
 }
 
-header {
-    background: #333;
-    color: white;
-    padding: 20px 0;
+h1, h2 {
     text-align: center;
 }
 
-header h1 {
-    margin: 0;
-}
-
-.btn {
-    display: inline-block;
-    padding: 10px 30px;
-    color: white;
-    background: #333;
-    text-decoration: none;
-    border-radius: 5px;
-}
-
-.btn:hover {
-    background: #555;
-}
-
-.main {
-    padding: 30px 0;
-    text-align: center;
-}
-
+/* Navbar Styles */
 .navbar {
+    width: 80%;
+    margin: auto;
     background-color: #333;
+    color: #ffffff;
+    padding: 10px 0;
     overflow: hidden;
 }
 
 .navbar a {
     float: left;
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
+    color: #ffffff;
     text-decoration: none;
+    padding: 10px 20px;
 }
 
-.navbar a:hover {
+.navbar a:hover, .navbar a.active {
     background-color: #ddd;
-    color: black;
+    color: #333;
 }
 
 .navbar ul {
@@ -67,4 +46,113 @@ header h1 {
 
 .navbar li {
     display: inline;
+}
+
+.navbar li.welcome-message {
+    line-height: 2.5; /* Adjust this value based on how you want to align it */
+    float: right; /* This will push the welcome message to the right side of the navbar */
+    color: #ffffff; /* If you want the text to be white */
+    padding: 0 20px; /* Optional padding */
+}
+
+/* Forms Style */
+form {
+    background-color: #ffffff;
+    padding: 20px;
+    margin-top: 20px;
+    margin-right: auto; /* Center the form */
+    margin-left: auto; /* Center the form */
+    width: 80%;
+    max-width: 500px; /* Restrict form width */
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow to the form */
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"], input[type="email"], input[type="password"], select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+}
+
+input[type="submit"] {
+    padding: 10px 15px;
+    background-color: #333;
+    color: #ffffff;
+    border: none;
+}
+
+input[type="submit"]:hover {
+    background-color: #555;
+}
+
+
+/* Table Styles */
+
+.dashboard-table {
+    max-width: 800px; /* Restrict table width */
+    margin: 20px auto; /* Center the table and give some margin on the top and bottom */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #333;
+    color: #ffffff;
+}
+
+tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Homepage styles */
+.home-hero {
+    background-color: #333;
+    color: #ffffff;
+    padding: 50px 0;
+    text-align: center;
+}
+
+.home-hero h1 {
+    margin: 0;
+}
+
+.home-content {
+    padding: 20px 0;
+    text-align: center;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #333;
+    color: #ffffff;
+    border: none;
+    text-decoration: none;  /* Useful if you're using this class with <a> tags */
+    text-align: center;     /* Center the text inside the button */
+    border-radius: 4px;     /* Optional: gives rounded corners to the button */
+    cursor: pointer;        /* Makes it clear that this is a clickable button */
+}
+
+.btn:hover {
+    background-color: #555;
 }
