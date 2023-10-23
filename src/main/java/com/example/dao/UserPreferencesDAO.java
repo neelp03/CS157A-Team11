@@ -15,7 +15,7 @@ public class UserPreferencesDAO {
     private static final String GET_PREFERENCES_BY_USER_ID = "SELECT * FROM UserPreferences WHERE UserId = ?";
     private static final String INSERT_PREFERENCE = "INSERT INTO UserPreferences (UserId, Pref_Name, Pref_Value) VALUES (?, ?, ?)";
     private static final String UPDATE_PREFERENCE = "UPDATE UserPreferences SET Pref_Value = ? WHERE UserId = ? AND Pref_Name = ?";
-    private static final String DELETE_PREFERENCE = "DELETE FROM UserPreferences WHERE PreferenceId = ?";
+    private static final String DELETE_PREFERENCE = "DELETE FROM UserPreferences ences WHERE PreferenceId = ?";
 
     public List<UserPreferences> getPreferencesByUserId(int userId) {
         List<UserPreferences> preferencesList = new ArrayList<>();

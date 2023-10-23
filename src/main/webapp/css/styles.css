@@ -92,6 +92,33 @@ input[type="submit"]:hover {
     background-color: #555;
 }
 
+/* Action forms reset and styles */
+.action-container form {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    width: auto;
+    max-width: none;
+    box-shadow: none;
+}
+
+.action-container {
+    display: flex;  /* Use flex to ensure children elements are inline */
+    align-items: center; /* Center align items vertically */
+}
+
+.action-btn, .action-form-inline {
+    margin-right: 10px;
+}
+
+.action-btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Some spacing between the two action buttons */
+.action-spacing {
+    margin-right: 10px;
+}
 
 /* Table Styles */
 
@@ -118,6 +145,10 @@ th, td {
 th {
     background-color: #333;
     color: #ffffff;
+}
+
+td {
+    vertical-align: top;
 }
 
 tr:hover {
