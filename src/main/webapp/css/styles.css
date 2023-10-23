@@ -110,9 +110,19 @@ input[type="submit"]:hover {
 .action-btn, .action-form-inline {
     margin-right: 10px;
 }
+.action-btn {
+    background-color: #333;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+}
 
 .action-btn:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #555;
 }
 
 /* Some spacing between the two action buttons */
