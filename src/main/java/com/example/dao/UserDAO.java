@@ -219,4 +219,51 @@ public class UserDAO {
         }
         return user;
     }
+
+
+    public boolean verifyPassword(int userId, String password) {
+        boolean isVerified = false;
+
+        String VERIFY_PASSWORD_QUERY = "SELECT password FROM users WHERE userId = ?";
+        try (Connection connection = DatabaseUtility.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(VERIFY_PASSWORD_QUERY)) {
+
+            preparedStatement.setInt(1, userId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String storedPassword = resultSet.getString("password");
+
+                if (password.equals(storedPassword)) {
+                    isVerified = true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return isVerified;
+    }
+
+    public boolean changePassword(int userId, String newPassword) {
+        String CHANGE_PASSWORD_QUERY = "UPDATE users SET password = ? WHERE userId = ?";
+        try (Connection connection = DatabaseUtility.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(CHANGE_PASSWORD_QUERY)) {
+
+            preparedStatement.setString(1, newPassword);
+            preparedStatement.setInt(2, userId);
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+            // Check if the update was successful
+            if (affectedRows > 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 }

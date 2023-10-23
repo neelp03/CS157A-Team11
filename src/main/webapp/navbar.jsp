@@ -20,6 +20,7 @@
         <% } else { %>
         <li class="welcome-message">Welcome, <%= loggedInUser.getName() %>!</li>
         <li><a href="dashboard.jsp">Dashboard</a></li>
+        <li><a href="profile.jsp">Profile</a></li>
         <li><a href="logout.jsp">Logout</a></li>
         <% } %>
     </ul>
