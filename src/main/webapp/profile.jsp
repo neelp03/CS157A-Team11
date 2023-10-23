@@ -59,8 +59,7 @@
             try {
                 preferenceId = Integer.parseInt(preferenceIdStr);
             } catch (NumberFormatException e) {
-                // Log the error, can be improved with proper logging tools.
-                System.out.println("Error parsing preferenceId: " + e.getMessage());
+                // Log the error, can be improved with proper logging tools
             }
         }
 
@@ -107,7 +106,6 @@
             } catch (Exception e) {
                 feedbackMessage = "An error occurred: " + e.getMessage();
                 // Log the error, can be improved with proper logging tools.
-                System.out.println("Error in preference action: " + e.getMessage());
             }
         }
     %>
@@ -148,9 +146,10 @@
                         <span id="prefValueDisplay_<%= pref.getPreferenceId() %>"><%= pref.getPrefValue() %></span>
                         <div class="action-container" id="editForm_<%= pref.getPreferenceId() %>" style="display:none;">
                             <form class="action-form" action="profile.jsp?preferenceAction=editPreference&preferenceId=<%= pref.getPreferenceId() %>" method="post">
-                                <input type="text" name="newPrefValue" value="<%= pref.getPrefValue() %>">
-                                <input type="submit" value="Save" class="action-btn">
-                            </form>
+                            <input type="hidden" name="prefName" value="<%= pref.getPrefName() %>">
+                            <input type="text" name="newPrefValue" value="<%= pref.getPrefValue() %>">
+                            <input type="submit" value="Save" class="action-btn">
+                        </form>
                         </div>
                     </td>
                     <td>
