@@ -11,14 +11,11 @@
 <%@ include file="navbar.jsp" %>
 
 <div class="container">
-
-    <!-- Hero Section -->
     <div class="home-hero">
         <h1>Welcome to RideShare!</h1>
         <p>Join our community and share rides with fellow university students.</p>
     </div>
 
-    <!-- Content Section -->
     <div class="home-content">
         <p>RideShare is the go-to platform for university students to find and offer rides within their community. Whether you're a driver looking to fill extra seats in your car or a passenger in need of a lift, RideShare connects you with your peers. Sign up today and start your journey with us!</p>
         <p>

@@ -29,17 +29,13 @@
             <input type="submit" value="Change Password">
         </form>
         <%
-            // Retrieve the message from session
             String message = (String) session.getAttribute("message");
-
-            // Display the message if it exists
             if (message != null && !message.isEmpty()) {
         %>
         <div class="alert">
             <%= message %>
         </div>
         <%
-                // Clear the message from the session after displaying it
                 session.removeAttribute("message");
             }
         %>
