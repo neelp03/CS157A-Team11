@@ -134,7 +134,7 @@
                 <tr>
                     <th>Preference Name</th>
                     <th>Preference Value</th>
-                    <th>Actions</th>
+                    <th style="text-align: center">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -149,7 +149,9 @@
                         <div class="action-container" id="editForm_<%= pref.getPreferenceId() %>" style="display:none;">
                             <form class="action-form" action="profile.jsp?preferenceAction=editPreference&preferenceId=<%= pref.getPreferenceId() %>" method="post">
                                 <input type="hidden" name="prefName" value="<%= pref.getPrefName() %>">
-                                <input type="text" name="newPrefValue" value="<%= pref.getPrefValue() %>">
+                                <label>
+                                    <input type="text" name="newPrefValue" value="<%= pref.getPrefValue() %>">
+                                </label>
                                 <input type="submit" value="Save" class="action-btn">
                             </form>
                         </div>
@@ -218,7 +220,7 @@
                 <th>Model</th>
                 <th>Year</th>
                 <th>License Plate</th>
-                <th>Actions</th>
+                <th style="text-align: center">Actions</th>
             </tr>
             </thead>
             <tbody>
