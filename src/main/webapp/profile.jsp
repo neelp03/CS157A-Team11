@@ -199,11 +199,70 @@
             <% } %>
         </div>
     </div>
+
+    <%
+        String vehicleAction = request.getParameter("vehicleAction");
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        if ("addVehicle".equals(vehicleAction)) {
+            String make = request.getParameter("make");
+            String model = request.getParameter("model");
+            String color = request.getParameter("color");
+            String licensePlate = request.getParameter("licensePlate");
+
+            if (make != null && model != null && color != null && licensePlate != null) {
+                try {
+                    Vehicle newVehicle = new Vehicle();
+                    assert currentUser != null;
+                    newVehicle.setUserId(currentUser.getUserId()); // assuming the Vehicle object has a userId field
+                    newVehicle.setManufacturer(make);
+                    newVehicle.setModel(model);
+                    newVehicle.setLicensePlate(licensePlate);
+                    newVehicle.setColor(color);
+                    vehicleDAO.insertVehicle(newVehicle);
+                    feedbackMessage = "Vehicle added successfully!";
+                }  catch (Exception e) {
+                    feedbackMessage = "An error occurred while adding the vehicle: " + e.getMessage();
+                }
+            } else {
+                feedbackMessage = "All fields are required.";
+            }
+        }
+        if ("deleteVehicle".equals(vehicleAction)) {
+            String licensePlate = request.getParameter("licensePlate");
+
+            if (licensePlate != null) {
+                boolean isDeleted = vehicleDAO.deleteVehicle(licensePlate);
+                feedbackMessage = isDeleted ? "Vehicle deleted successfully!" : "Error occurred while deleting the vehicle.";
+            } else {
+                feedbackMessage = "License Plate is required.";
+            }
+        }
+
+        if ("updateVehicle".equals(vehicleAction)) {
+            String licensePlate = request.getParameter("licensePlate");
+            // Fetch other vehicle details from the request as required
+
+            if (licensePlate != null) {
+                Vehicle vehicleToUpdate = vehicleDAO.getVehicleByLicense(licensePlate);
+                if (vehicleToUpdate != null) {
+                    // Update vehicle details
+                    vehicleDAO.updateVehicle(vehicleToUpdate);
+                    feedbackMessage = "Vehicle updated successfully!";
+                } else {
+                    feedbackMessage = "Vehicle not found.";
+                }
+            } else {
+                feedbackMessage = "License Plate is required.";
+            }
+        }
+    %>
+
+
     <div class="profile-section">
         <h2>Your Vehicles</h2>
         <%-- Display Vehicle Management Interface --%>
         <%
-            VehicleDAO vehicleDAO = new VehicleDAO();
+            assert currentUser != null;
             List<Vehicle> vehicles = vehicleDAO.getVehiclesByUserId(currentUser.getUserId());
         %>
 
@@ -231,8 +290,15 @@
                 <td><%= vehicle.getColor() %></td>
                 <td><%= vehicle.getLicensePlate() %></td>
                 <td>
-                    <!-- Actions like Edit and Delete -->
+                    <div class="action-container">
+                        <button  class="action-btn" onclick="location.href='profile.jsp?licensePlate=<%= vehicle.getLicensePlate() %>'">Edit</button>
+                        <form class="action-form-inline" action="profile.jsp?vehicleAction=deleteVehicle" method="post">
+                            <input type="hidden" name="licensePlate" value="<%= vehicle.getLicensePlate() %>">
+                            <input type="submit" value="Delete" class="action-btn">
+                        </form>
+                    </div>
                 </td>
+
             </tr>
             <% } %>
             </tbody>
@@ -240,14 +306,14 @@
 
         <%-- Form to Add New Vehicle --%>
         <form action="profile.jsp?vehicleAction=addVehicle" method="post">
-            <label for="make">Make:</label>
+            <label for="licensePlate">License Plate:</label>
+            <input type="text" id="licensePlate" name="licensePlate">
+            <label for="make">Manufacturer:</label>
             <input type="text" id="make" name="make">
             <label for="model">Model:</label>
             <input type="text" id="model" name="model">
-            <label for="year">Year:</label>
-            <input type="text" id="year" name="year">
-            <label for="licensePlate">License Plate:</label>
-            <input type="text" id="licensePlate" name="licensePlate">
+            <label for="color">Color:</label>
+            <input type="text" id="color" name="color">
             <input type="submit" value="Add Vehicle">
         </form>
     </div>
@@ -275,7 +341,6 @@
                             message = "Error occurred while unfriending.";
                         }
                     }
-
                     if (currentUser != null) {
                         FriendshipDAO friendshipDAO = new FriendshipDAO();
                         UserDAO userDAO = new UserDAO();
