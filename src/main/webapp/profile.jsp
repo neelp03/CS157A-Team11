@@ -4,6 +4,8 @@
 <%@ page import="com.example.dao.FriendshipDAO" %>
 <%@ page import="com.example.models.UserPreferences" %>
 <%@ page import="com.example.dao.UserPreferencesDAO" %>
+<%@ page import="com.example.dao.VehicleDAO" %>
+<%@ page import="com.example.models.Vehicle" %>
 <%@ page import="java.util.List" %>
 <%@ include file="navbar.jsp" %>
 
@@ -146,10 +148,10 @@
                         <span id="prefValueDisplay_<%= pref.getPreferenceId() %>"><%= pref.getPrefValue() %></span>
                         <div class="action-container" id="editForm_<%= pref.getPreferenceId() %>" style="display:none;">
                             <form class="action-form" action="profile.jsp?preferenceAction=editPreference&preferenceId=<%= pref.getPreferenceId() %>" method="post">
-                            <input type="hidden" name="prefName" value="<%= pref.getPrefName() %>">
-                            <input type="text" name="newPrefValue" value="<%= pref.getPrefValue() %>">
-                            <input type="submit" value="Save" class="action-btn">
-                        </form>
+                                <input type="hidden" name="prefName" value="<%= pref.getPrefName() %>">
+                                <input type="text" name="newPrefValue" value="<%= pref.getPrefValue() %>">
+                                <input type="submit" value="Save" class="action-btn">
+                            </form>
                         </div>
                     </td>
                     <td>
@@ -172,7 +174,7 @@
             </table>
 
             <%-- Form to add new user preferences --%>
-            <form action="profile.jsp?preferenceAction=addPreference" method="post">
+            <form class="prefAddForm" action="profile.jsp?preferenceAction=addPreference" method="post">
                 <label for="prefName">Preference Name:</label>
                 <input type="text" id="prefName" name="prefName">
                 <label for="prefValue">Preference Value:</label>
@@ -195,8 +197,57 @@
             <% } %>
         </div>
     </div>
+    <div class="profile-section">
+        <h2>Your Vehicles</h2>
+        <%-- Display Vehicle Management Interface --%>
+        <%
+            VehicleDAO vehicleDAO = new VehicleDAO();
+            List<Vehicle> vehicles = vehicleDAO.getVehiclesByUserId(currentUser.getUserId());
+        %>
 
-</div>
+        <%-- Display feedback message if available --%>
+        <% if (feedbackMessage != null) { %>
+        <p><%= feedbackMessage %></p>
+        <% } %>
+
+        <%-- List User Vehicles --%>
+        <table class="dashboard-table">
+            <thead>
+            <tr>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Year</th>
+                <th>License Plate</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% for (Vehicle vehicle : vehicles) { %>
+            <tr>
+                <td><%= vehicle.getManufacturer() %></td>
+                <td><%= vehicle.getModel() %></td>
+                <td><%= vehicle.getColor() %></td>
+                <td><%= vehicle.getLicensePlate() %></td>
+                <td>
+                    <!-- Actions like Edit and Delete -->
+                </td>
+            </tr>
+            <% } %>
+            </tbody>
+        </table>
+
+        <%-- Form to Add New Vehicle --%>
+        <form action="profile.jsp?vehicleAction=addVehicle" method="post">
+            <label for="make">Make:</label>
+            <input type="text" id="make" name="make">
+            <label for="model">Model:</label>
+            <input type="text" id="model" name="model">
+            <label for="year">Year:</label>
+            <input type="text" id="year" name="year">
+            <label for="licensePlate">License Plate:</label>
+            <input type="text" id="licensePlate" name="licensePlate">
+            <input type="submit" value="Add Vehicle">
+        </form>
     </div>
 
     <!-- Manage Friends Section -->
@@ -280,6 +331,5 @@
         <a href="ReviewsList.jsp" class="btn">View My Reviews</a>
     </div>
 </div>
-
 </body>
 </html>

@@ -110,6 +110,25 @@ input[type="submit"]:hover {
 .action-btn, .action-form-inline {
     margin-right: 10px;
 }
+
+.action-form {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.prefAddForm input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
 .action-btn {
     background-color: #333;
     color: #ffffff;
