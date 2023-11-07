@@ -279,6 +279,11 @@
         <!-- You can link to another page where reviews are listed and managed, or embed the reviews list here. -->
         <a href="ReviewsList.jsp" class="btn">View My Reviews</a>
     </div>
+
+    <div class="profile-section">
+        <h3>Ride History</h3>
+        <a href="ridehistory.jsp" class="btn">View Ride History</a>
+    </div>
 </div>
 
 </body>
