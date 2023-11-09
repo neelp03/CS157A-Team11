@@ -239,20 +239,27 @@
         }
 
         if ("updateVehicle".equals(vehicleAction)) {
-            String licensePlate = request.getParameter("licensePlate");
-            // Fetch other vehicle details from the request as required
+            String originalLicensePlate = request.getParameter("originalLicensePlate");
+            String newLicensePlate = request.getParameter("licensePlate");
+            String make = request.getParameter("make");
+            String model = request.getParameter("model");
+            String color = request.getParameter("color");
 
-            if (licensePlate != null) {
-                Vehicle vehicleToUpdate = vehicleDAO.getVehicleByLicense(licensePlate);
+            if (originalLicensePlate != null && newLicensePlate != null && make != null && model != null && color != null) {
+                Vehicle vehicleToUpdate = vehicleDAO.getVehicleByLicense(originalLicensePlate);
                 if (vehicleToUpdate != null) {
-                    // Update vehicle details
-                    vehicleDAO.updateVehicle(vehicleToUpdate);
-                    feedbackMessage = "Vehicle updated successfully!";
+                    vehicleToUpdate.setLicensePlate(newLicensePlate);
+                    vehicleToUpdate.setManufacturer(make);
+                    vehicleToUpdate.setModel(model);
+                    vehicleToUpdate.setColor(color);
+
+                    boolean updateSuccess = vehicleDAO.updateVehicle(vehicleToUpdate);
+                    feedbackMessage = updateSuccess ? "Vehicle updated successfully!" : "Error occurred while updating the vehicle.";
                 } else {
                     feedbackMessage = "Vehicle not found.";
                 }
             } else {
-                feedbackMessage = "License Plate is required.";
+                feedbackMessage = "All fields are required.";
             }
         }
     %>
@@ -277,9 +284,9 @@
             <tr>
                 <th>Make</th>
                 <th>Model</th>
-                <th>Year</th>
+                <th>Color</th>
                 <th>License Plate</th>
-                <th style="text-align: center">Actions</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -291,20 +298,46 @@
                 <td><%= vehicle.getLicensePlate() %></td>
                 <td>
                     <div class="action-container">
-                        <button  class="action-btn" onclick="location.href='profile.jsp?licensePlate=<%= vehicle.getLicensePlate() %>'">Edit</button>
+                        <button onclick="showEditVehicleForm('<%= vehicle.getLicensePlate() %>')" class="action-btn">Edit</button>
                         <form class="action-form-inline" action="profile.jsp?vehicleAction=deleteVehicle" method="post">
                             <input type="hidden" name="licensePlate" value="<%= vehicle.getLicensePlate() %>">
                             <input type="submit" value="Delete" class="action-btn">
                         </form>
                     </div>
-                </td>
+                    <div id="editVehicleForm_<%= vehicle.getLicensePlate() %>" style="display:none;">
+                        <form action="profile.jsp?vehicleAction=updateVehicle" method="post">
+                            <input type="hidden" name="originalLicensePlate" value="<%= vehicle.getLicensePlate() %>">
 
+                            <label for="make_<%= vehicle.getLicensePlate() %>">Make:</label>
+                            <input type="text" id="make_<%= vehicle.getLicensePlate() %>" name="make" value="<%= vehicle.getManufacturer() %>">
+
+                            <label for="model_<%= vehicle.getLicensePlate() %>">Model:</label>
+                            <input type="text" id="model_<%= vehicle.getLicensePlate() %>" name="model" value="<%= vehicle.getModel() %>">
+
+                            <label for="color_<%= vehicle.getLicensePlate() %>">Color:</label>
+                            <input type="text" id="color_<%= vehicle.getLicensePlate() %>" name="color" value="<%= vehicle.getColor() %>">
+
+                            <label for="licensePlate_<%= vehicle.getLicensePlate() %>">License Plate:</label>
+                            <input type="text" id="licensePlate_<%= vehicle.getLicensePlate() %>" name="licensePlate" value="<%= vehicle.getLicensePlate() %>">
+
+                            <input type="submit" value="Save">
+                        </form>
+                    </div>
+                </td>
             </tr>
             <% } %>
             </tbody>
         </table>
 
-        <%-- Form to Add New Vehicle --%>
+        <script>
+            function showEditVehicleForm(licensePlate) {
+                var editForm = document.getElementById('editVehicleForm_' + licensePlate);
+                var displayStatus = editForm.style.display;
+                editForm.style.display = displayStatus === 'none' ? 'block' : 'none';
+            }
+        </script>
+
+    <%-- Form to Add New Vehicle --%>
         <form action="profile.jsp?vehicleAction=addVehicle" method="post">
             <label for="licensePlate">License Plate:</label>
             <input type="text" id="licensePlate" name="licensePlate">
