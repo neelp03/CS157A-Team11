@@ -4,6 +4,8 @@
 <%@ page import="com.example.dao.FriendshipDAO" %>
 <%@ page import="com.example.models.UserPreferences" %>
 <%@ page import="com.example.dao.UserPreferencesDAO" %>
+<%@ page import="com.example.dao.VehicleDAO" %>
+<%@ page import="com.example.models.Vehicle" %>
 <%@ page import="java.util.List" %>
 <%@ include file="navbar.jsp" %>
 
@@ -132,7 +134,7 @@
                 <tr>
                     <th>Preference Name</th>
                     <th>Preference Value</th>
-                    <th>Actions</th>
+                    <th style="text-align: center">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -146,10 +148,12 @@
                         <span id="prefValueDisplay_<%= pref.getPreferenceId() %>"><%= pref.getPrefValue() %></span>
                         <div class="action-container" id="editForm_<%= pref.getPreferenceId() %>" style="display:none;">
                             <form class="action-form" action="profile.jsp?preferenceAction=editPreference&preferenceId=<%= pref.getPreferenceId() %>" method="post">
-                            <input type="hidden" name="prefName" value="<%= pref.getPrefName() %>">
-                            <input type="text" name="newPrefValue" value="<%= pref.getPrefValue() %>">
-                            <input type="submit" value="Save" class="action-btn">
-                        </form>
+                                <input type="hidden" name="prefName" value="<%= pref.getPrefName() %>">
+                                <label>
+                                    <input type="text" name="newPrefValue" value="<%= pref.getPrefValue() %>">
+                                </label>
+                                <input type="submit" value="Save" class="action-btn">
+                            </form>
                         </div>
                     </td>
                     <td>
@@ -172,7 +176,7 @@
             </table>
 
             <%-- Form to add new user preferences --%>
-            <form action="profile.jsp?preferenceAction=addPreference" method="post">
+            <form class="prefAddForm" action="profile.jsp?preferenceAction=addPreference" method="post">
                 <label for="prefName">Preference Name:</label>
                 <input type="text" id="prefName" name="prefName">
                 <label for="prefValue">Preference Value:</label>
@@ -196,7 +200,155 @@
         </div>
     </div>
 
-</div>
+    <%
+        String vehicleAction = request.getParameter("vehicleAction");
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        if ("addVehicle".equals(vehicleAction)) {
+            String make = request.getParameter("make");
+            String model = request.getParameter("model");
+            String color = request.getParameter("color");
+            String licensePlate = request.getParameter("licensePlate");
+
+            if (make != null && model != null && color != null && licensePlate != null) {
+                try {
+                    Vehicle newVehicle = new Vehicle();
+                    assert currentUser != null;
+                    newVehicle.setUserId(currentUser.getUserId()); // assuming the Vehicle object has a userId field
+                    newVehicle.setManufacturer(make);
+                    newVehicle.setModel(model);
+                    newVehicle.setLicensePlate(licensePlate);
+                    newVehicle.setColor(color);
+                    vehicleDAO.insertVehicle(newVehicle);
+                    feedbackMessage = "Vehicle added successfully!";
+                }  catch (Exception e) {
+                    feedbackMessage = "An error occurred while adding the vehicle: " + e.getMessage();
+                }
+            } else {
+                feedbackMessage = "All fields are required.";
+            }
+        }
+        if ("deleteVehicle".equals(vehicleAction)) {
+            String licensePlate = request.getParameter("licensePlate");
+
+            if (licensePlate != null) {
+                boolean isDeleted = vehicleDAO.deleteVehicle(licensePlate);
+                feedbackMessage = isDeleted ? "Vehicle deleted successfully!" : "Error occurred while deleting the vehicle.";
+            } else {
+                feedbackMessage = "License Plate is required.";
+            }
+        }
+
+        if ("updateVehicle".equals(vehicleAction)) {
+            String originalLicensePlate = request.getParameter("originalLicensePlate");
+            String newLicensePlate = request.getParameter("licensePlate");
+            String make = request.getParameter("make");
+            String model = request.getParameter("model");
+            String color = request.getParameter("color");
+
+            if (originalLicensePlate != null && newLicensePlate != null && make != null && model != null && color != null) {
+                Vehicle vehicleToUpdate = vehicleDAO.getVehicleByLicense(originalLicensePlate);
+                if (vehicleToUpdate != null) {
+                    vehicleToUpdate.setLicensePlate(newLicensePlate);
+                    vehicleToUpdate.setManufacturer(make);
+                    vehicleToUpdate.setModel(model);
+                    vehicleToUpdate.setColor(color);
+
+                    boolean updateSuccess = vehicleDAO.updateVehicle(vehicleToUpdate);
+                    feedbackMessage = updateSuccess ? "Vehicle updated successfully!" : "Error occurred while updating the vehicle.";
+                } else {
+                    feedbackMessage = "Vehicle not found.";
+                }
+            } else {
+                feedbackMessage = "All fields are required.";
+            }
+        }
+    %>
+
+
+    <div class="profile-section">
+        <h2>Your Vehicles</h2>
+        <%-- Display Vehicle Management Interface --%>
+        <%
+            assert currentUser != null;
+            List<Vehicle> vehicles = vehicleDAO.getVehiclesByUserId(currentUser.getUserId());
+        %>
+
+        <%-- Display feedback message if available --%>
+        <% if (feedbackMessage != null) { %>
+        <p><%= feedbackMessage %></p>
+        <% } %>
+
+        <%-- List User Vehicles --%>
+        <table class="dashboard-table">
+            <thead>
+            <tr>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Color</th>
+                <th>License Plate</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% for (Vehicle vehicle : vehicles) { %>
+            <tr>
+                <td><%= vehicle.getManufacturer() %></td>
+                <td><%= vehicle.getModel() %></td>
+                <td><%= vehicle.getColor() %></td>
+                <td><%= vehicle.getLicensePlate() %></td>
+                <td>
+                    <div class="action-container">
+                        <button onclick="showEditVehicleForm('<%= vehicle.getLicensePlate() %>')" class="action-btn">Edit</button>
+                        <form class="action-form-inline" action="profile.jsp?vehicleAction=deleteVehicle" method="post">
+                            <input type="hidden" name="licensePlate" value="<%= vehicle.getLicensePlate() %>">
+                            <input type="submit" value="Delete" class="action-btn">
+                        </form>
+                    </div>
+                    <div id="editVehicleForm_<%= vehicle.getLicensePlate() %>" style="display:none;">
+                        <form action="profile.jsp?vehicleAction=updateVehicle" method="post">
+                            <input type="hidden" name="originalLicensePlate" value="<%= vehicle.getLicensePlate() %>">
+
+                            <label for="make_<%= vehicle.getLicensePlate() %>">Make:</label>
+                            <input type="text" id="make_<%= vehicle.getLicensePlate() %>" name="make" value="<%= vehicle.getManufacturer() %>">
+
+                            <label for="model_<%= vehicle.getLicensePlate() %>">Model:</label>
+                            <input type="text" id="model_<%= vehicle.getLicensePlate() %>" name="model" value="<%= vehicle.getModel() %>">
+
+                            <label for="color_<%= vehicle.getLicensePlate() %>">Color:</label>
+                            <input type="text" id="color_<%= vehicle.getLicensePlate() %>" name="color" value="<%= vehicle.getColor() %>">
+
+                            <label for="licensePlate_<%= vehicle.getLicensePlate() %>">License Plate:</label>
+                            <input type="text" id="licensePlate_<%= vehicle.getLicensePlate() %>" name="licensePlate" value="<%= vehicle.getLicensePlate() %>">
+
+                            <input type="submit" value="Save">
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <% } %>
+            </tbody>
+        </table>
+
+        <script>
+            function showEditVehicleForm(licensePlate) {
+                var editForm = document.getElementById('editVehicleForm_' + licensePlate);
+                var displayStatus = editForm.style.display;
+                editForm.style.display = displayStatus === 'none' ? 'block' : 'none';
+            }
+        </script>
+
+    <%-- Form to Add New Vehicle --%>
+        <form action="profile.jsp?vehicleAction=addVehicle" method="post">
+            <label for="licensePlate">License Plate:</label>
+            <input type="text" id="licensePlate" name="licensePlate">
+            <label for="make">Manufacturer:</label>
+            <input type="text" id="make" name="make">
+            <label for="model">Model:</label>
+            <input type="text" id="model" name="model">
+            <label for="color">Color:</label>
+            <input type="text" id="color" name="color">
+            <input type="submit" value="Add Vehicle">
+        </form>
     </div>
 
     <!-- Manage Friends Section -->
@@ -222,7 +374,6 @@
                             message = "Error occurred while unfriending.";
                         }
                     }
-
                     if (currentUser != null) {
                         FriendshipDAO friendshipDAO = new FriendshipDAO();
                         UserDAO userDAO = new UserDAO();
@@ -280,6 +431,5 @@
         <a href="ReviewsList.jsp" class="btn">View My Reviews</a>
     </div>
 </div>
-
 </body>
 </html>
