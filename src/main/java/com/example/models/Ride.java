@@ -7,6 +7,7 @@ public class Ride {
 
     private int rideId;
     private int driverId;
+    private String driverName;
     private Time time;
     private String pickupLocation;
     private String dropoffLocation;
@@ -40,6 +41,13 @@ public class Ride {
 
     public void setDriverId(int driverId) {
         this.driverId = driverId;
+    }
+    public String getDriverName() {
+        return driverName;
+    }
+
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
     }
 
     public Time getTime() {
