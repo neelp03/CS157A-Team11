@@ -18,11 +18,14 @@
 
 <h1>UniRide - Rides</h1>
 
+<!-- Search Form -->
 <form action="rides.jsp" method="GET">
     <label for="searchQuery">Search For Rides (by location or time):</label>
     <input type="text" id="searchQuery" name="searchQuery" required>
     <input type="submit" value="Search">
 </form>
+
+<!-- Ride Request Handling -->
 
 <%
     String action = request.getParameter("action");
@@ -58,6 +61,7 @@
     <thead>
     <tr>
         <th>Driver Name</th>
+        <th>Date</th>
         <th>Time</th>
         <th>Pickup Location</th>
         <th>Dropoff Location</th>
@@ -68,7 +72,8 @@
     <% for (Ride ride : ridesList) { %>
     <tr>
         <td><%= ride.getDriverName() %></td>
-        <td><%= ride.getTime() %></td>
+        <td><%= ride.getDate() %></td> <!-- Display the Date -->
+        <td><%= ride.getTime() %></td> <!-- Display the Time -->
         <td><%= ride.getPickupLocation() %></td>
         <td><%= ride.getDropoffLocation() %></td>
         <td>

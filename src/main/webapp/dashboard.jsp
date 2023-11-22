@@ -68,13 +68,19 @@
     </table>
 
     <!-- Requests Received for Your Rides -->
-    <h2>Requests Received</h2>
+    <h2>Requests Received for Your Rides</h2>
     <%
-        RidesDAO ridesDAO = new RidesDAO();
-        UserDAO userDAO = new UserDAO(); // Assuming you have a UserDAO with getUserById method
-        List<Ride> yourRides = ridesDAO.getRidesByDriverId(currentUser.getUserId());
+        List<Ride> yourRides = new RidesDAO().getRidesByDriverId(currentUser.getUserId());
+        String currentLabel = "";
         for (Ride ride : yourRides) {
-            List<Request> rideRequests = requestsDAO.getRequestsByRideId(ride.getRideId());
+            String rideLabel = ride.getDate() + " at " + ride.getTime(); // Assuming getDate and getTime methods exist
+            if (!rideLabel.equals(currentLabel)) {
+                currentLabel = rideLabel;
+    %>
+    <h3>Rides on <%= ride.getDate() %> at <%= ride.getTime() %>:</h3>
+    <%
+        }
+        List<Request> rideRequests = requestsDAO.getRequestsByRideId(ride.getRideId());
     %>
     <table>
         <tr>
@@ -83,7 +89,7 @@
             <th>Action</th>
         </tr>
         <% for (Request req : rideRequests) {
-            Users passenger = userDAO.getUserByID(req.getPassengerId()); // Fetch the passenger's details
+            Users passenger = new UserDAO().getUserByID(req.getPassengerId());
         %>
         <tr>
             <td><%= passenger != null ? passenger.getName() : "Unknown" %></td>
