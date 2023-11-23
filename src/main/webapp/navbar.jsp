@@ -3,6 +3,8 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
 </head>
 <body>
 
@@ -19,11 +21,16 @@
         <li><a href="login.jsp">Login</a></li>
         <% }
         else { %>
-        <li class="welcome-message">Welcome, <%= loggedInUser.getName() %>!</li>
         <li><a href="dashboard.jsp">Dashboard</a></li>
         <li><a href="rides.jsp">Rides</a></li>
         <li><a href="profile.jsp">Profile</a></li>
         <li><a href="logout.jsp">Logout</a></li>
+
+        <li class="welcome-message">Welcome, <%= loggedInUser.getName() %>!</li>
+        <li class="notification-icon" id="notificationIcon">
+            <a href="notifications.jsp"><i class="fa fa-bell"></i></a>
+            <span id="notificationCount"></span>
+        </li>
         <% } %>
     </ul>
 </div>
