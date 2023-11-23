@@ -55,6 +55,24 @@ h1, h2, h3 {
     padding: 0 20px; /* Optional padding */
 }
 
+.navbar li.notification-icon {
+    float: right;
+    padding: 10px 20px;
+    clear: right;
+}
+
+.navbar li.notification-icon a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.navbar li.notification-icon a:hover {
+    background-color: #555;
+}
+
+
+
 /* Forms Style */
 form {
     background-color: #ffffff;
