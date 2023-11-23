@@ -74,6 +74,7 @@ public class Notification {
     }
 
     // equals(), hashCode() and toString() methods
+    
 
     @Override
     public boolean equals(Object o) {

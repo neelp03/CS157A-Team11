@@ -9,17 +9,22 @@ public class RideHistory {
     private int rideId;
     private String type; // "offered" or "taken"
     private Date date;
+    private String pickupLocation; // Add pickup location
+    private String dropoffLocation; // Add dropoff location
 
     // Constructors, getters, and setters
 
     public RideHistory() {}
 
-    public RideHistory(int rideHistoryId, int userId, int rideId, String type, Date date) {
+    public RideHistory(int rideHistoryId, int userId, int rideId, String type, Date date,
+                       String pickupLocation, String dropoffLocation) {
         this.rideHistoryId = rideHistoryId;
         this.userId = userId;
         this.rideId = rideId;
         this.type = type;
         this.date = date;
+        this.pickupLocation = pickupLocation;
+        this.dropoffLocation = dropoffLocation;
     }
 
     public int getRideHistoryId() {
@@ -54,11 +59,27 @@ public class RideHistory {
         this.type = type;
     }
 
-    public java.sql.Date getDate() {
-        return (java.sql.Date) date;
+    public Date getDate() {
+        return date;
     }
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getPickupLocation() {
+        return pickupLocation;
+    }
+
+    public void setPickupLocation(String pickupLocation) {
+        this.pickupLocation = pickupLocation;
+    }
+
+    public String getDropoffLocation() {
+        return dropoffLocation;
+    }
+
+    public void setDropoffLocation(String dropoffLocation) {
+        this.dropoffLocation = dropoffLocation;
     }
 }

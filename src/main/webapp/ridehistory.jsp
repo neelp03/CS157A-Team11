@@ -17,15 +17,20 @@
 
     <div class="profile-section">
         <%
-            RideHistoryDAO rideHistoryDAO = new RideHistoryDAO();
-            List<RideHistory> rideHistoryList = rideHistoryDAO.getRideHistoryByUserId(((Users) session.getAttribute("loggedInUser")).getUserId());
+            Users loggedUser = (Users) session.getAttribute("loggedInUser");
+            if (loggedUser != null) {
+                RideHistoryDAO rideHistoryDAO = new RideHistoryDAO();
+                List<RideHistory> rideHistoryList = rideHistoryDAO.getRideHistoryByUserId(loggedUser.getUserId());
         %>
+
 
         <table class="dashboard-table">
             <thead>
             <tr>
                 <th>Ride Type</th>
-                <th>Ride Date</th>
+                <th>Ride Time</th>
+                <th>Pickup Location</th>
+                <th>Dropoff Location</th>
             </tr>
             </thead>
             <tbody>
@@ -34,6 +39,8 @@
             <tr>
                 <td><%= rideHistory.getType() %></td>
                 <td><%= rideHistory.getDate() %></td>
+                <td><%= rideHistory.getPickupLocation() %></td>
+                <td><%= rideHistory.getDropoffLocation() %></td>
             </tr>
             <% } %>
             <% } else { %>
@@ -43,6 +50,10 @@
             <% } %>
             </tbody>
         </table>
+        <% } else { %>
+        <p>User not logged in</p>
+        <% } %>
+
     </div>
 </div>
 
