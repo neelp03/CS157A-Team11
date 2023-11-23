@@ -1,6 +1,7 @@
 package com.example.dao;
 
 import com.example.models.Ride;
+import com.example.models.Users;
 import com.example.utils.DatabaseUtility;
 
 import java.sql.Connection;
@@ -67,6 +68,40 @@ public class RidesDAO {
         }
 
         return ridesList;
+    }
+
+    public List<Ride> searchRidesByLocationOrTime(String query) {
+        List<Ride> resultList = new ArrayList<>();
+
+        String SEARCH_RIDES_QUERY = "SELECT rideId, driverId, users.name, rides.time, " +
+                "pickupLocation, dropoffLocation, status FROM rides, users " +
+                "WHERE rides.driverId = users.userId AND dropoffLocation LIKE ? OR time LIKE ?";
+
+        try (Connection connection = DatabaseUtility.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SEARCH_RIDES_QUERY)) {
+
+            preparedStatement.setString(1, "%" + query + "%");
+            preparedStatement.setString(2, "%" + query + "%");
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                Ride ride = new Ride();
+                ride.setRideId(rs.getInt("rideId"));
+                ride.setDriverId(rs.getInt("DriverId"));
+                ride.setDriverName(rs.getString("name"));
+                ride.setTime(rs.getTime("Time"));
+                ride.setPickupLocation(rs.getString("PickupLocation"));
+                ride.setDropoffLocation(rs.getString("DropoffLocation")); // Ideally, you wouldn't retrieve the password here.
+                ride.setStatus(rs.getString("Status"));
+                resultList.add(ride);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resultList;
     }
 
     public boolean insertRide(Ride ride) {
