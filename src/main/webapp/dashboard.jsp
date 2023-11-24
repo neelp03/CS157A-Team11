@@ -1,65 +1,112 @@
-<%@ page import="com.example.models.Users" %>
-<%@ page import="com.example.dao.UserDAO" %>
-<%@ page import="com.example.dao.UniversityDAO" %>
+<%@ page import="com.example.models.Users, com.example.models.Ride, com.example.models.Request" %>
+<%@ page import="com.example.dao.RidesDAO, com.example.dao.RequestsDAO, com.example.dao.UserDAO" %>
 <%@ page import="java.util.List" %>
-
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="css/styles.css"></head>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
 <body>
 <jsp:include page="navbar.jsp" />
-<!-- Welcome Message -->
-<h1>UniRide - Dashboard</h1>
 
-<!-- Search Bar -->
-<form action="dashboard.jsp" method="GET">
-    <label for="searchQuery">Search Users (by name or email):</label>
-    <input type="text" id="searchQuery" name="searchQuery" required>
-    <input type="submit" value="Search">
-</form>
+<div class="container">
+    <h1>Dashboard</h1>
 
-<!-- Display Search Results -->
-<%
-    String searchQuery = request.getParameter("searchQuery");
-    if (searchQuery != null && !searchQuery.trim().isEmpty()) {
-        UserDAO userDao = new UserDAO();
-        List<Users> usersList = userDao.searchUsersByNameOrEmail(searchQuery);
-%>
+    <!-- Process Cancel/Decline Request -->
+    <%
+        String action = request.getParameter("action");
+        Users currentUser = (Users) session.getAttribute("loggedInUser");
+        RequestsDAO requestsDAO = new RequestsDAO();
+        String requestProcessingMessage = null;
 
-<h2>Search Results:</h2>
-<table border="1" class="dashboard-table">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>University Name</th>
-    </tr>
-    </thead>
-    <tbody>
-    <% for (Users user : usersList) { %>
-    <tr>
-        <td><%= user.getName() %></td>
-        <td><%= user.getEmail() %></td>
-        <td><%= user.getRole() %></td>
-        <td>
-            <%
-                UniversityDAO universityDao = new UniversityDAO();
-                String universityName = universityDao.getUniversityNameById(user.getUniversityId());
-            %>
-            <%= universityName %>
-        </td>
+        if ("cancelRequest".equals(action) && currentUser != null) {
+            int requestId = Integer.parseInt(request.getParameter("requestId"));
+            // Assuming the cancelRequest method updates the status of the request to 'Cancelled'
+            boolean isCancelled = requestsDAO.deleteRequest(requestId);
+            if (isCancelled) {
+                requestProcessingMessage = "Request cancelled successfully.";
+            } else {
+                requestProcessingMessage = "Failed to cancel the request.";
+            }
+        }
+    %>
 
-    </tr>
+    <!-- Display a message after processing -->
+    <% if (requestProcessingMessage != null) { %>
+    <p><%= requestProcessingMessage %></p>
     <% } %>
-    </tbody>
-</table>
 
-<% } %>
+    <!-- Rides Requested by You -->
+    <h2>Rides Requested</h2>
+    <%
+        List<Request> yourRequests = requestsDAO.getRequestsByPassengerId(currentUser.getUserId());
+    %>
+    <table>
+        <tr>
+            <th>Driver Name</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        <% for (Request req : yourRequests) {
+            Ride ride = new RidesDAO().getRideById(req.getRideId());
+            Users driver = ride != null ? new UserDAO().getUserByID(ride.getDriverId()) : null;
+        %>
+        <tr>
+            <td><%= driver != null ? driver.getName() : "Unknown" %></td>
+            <td><%= req.getStatus() %></td>
+            <td>
+                <form action="dashboard.jsp" method="post">
+                    <input type="hidden" name="action" value="cancelRequest">
+                    <input type="hidden" name="requestId" value="<%= req.getRequestId() %>">
+                    <input type="submit" value="Cancel Request">
+                </form>
+            </td>
+        </tr>
+        <% } %>
+    </table>
 
+    <!-- Requests Received for Your Rides -->
+    <h2>Requests Received for Your Rides</h2>
+    <%
+        List<Ride> yourRides = new RidesDAO().getRidesByDriverId(currentUser.getUserId());
+        String currentLabel = "";
+        for (Ride ride : yourRides) {
+            String rideLabel = ride.getDate() + " at " + ride.getTime(); // Assuming getDate and getTime methods exist
+            if (!rideLabel.equals(currentLabel)) {
+                currentLabel = rideLabel;
+    %>
+    <h3>Rides on <%= ride.getDate() %> at <%= ride.getTime() %>:</h3>
+    <%
+        }
+        List<Request> rideRequests = requestsDAO.getRequestsByRideId(ride.getRideId());
+    %>
+    <table>
+        <tr>
+            <th>Passenger Name</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        <% for (Request req : rideRequests) {
+            Users passenger = new UserDAO().getUserByID(req.getPassengerId());
+        %>
+        <tr>
+            <td><%= passenger != null ? passenger.getName() : "Unknown" %></td>
+            <td><%= req.getStatus() %></td>
+            <td>
+                <form action="dashboard.jsp" method="post">
+                    <input type="hidden" name="action" value="cancelRequest">
+                    <input type="hidden" name="requestId" value="<%= req.getRequestId() %>">
+                    <input type="submit" value="Decline Request">
+                </form>
+            </td>
+        </tr>
+        <% } %>
+    </table>
+    <%
+        }
+    %>
+</div>
 </body>
 </html>

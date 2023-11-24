@@ -23,6 +23,7 @@
         else { %>
         <li><a href="dashboard.jsp">Dashboard</a></li>
         <li><a href="rides.jsp">Rides</a></li>
+        <li><a href="search.jsp">Search</a></li>
         <li><a href="profile.jsp">Profile</a></li>
         <li><a href="logout.jsp">Logout</a></li>
 

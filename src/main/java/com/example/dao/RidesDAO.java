@@ -1,7 +1,6 @@
 package com.example.dao;
 
 import com.example.models.Ride;
-import com.example.models.Users;
 import com.example.utils.DatabaseUtility;
 
 import java.sql.Connection;
@@ -12,10 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RidesDAO {
-
     private static final String GET_RIDE_BY_ID = "SELECT * FROM Rides WHERE RideId = ?";
     private static final String GET_RIDES_BY_DRIVER_ID = "SELECT * FROM Rides WHERE DriverId = ?";
-    private static final String INSERT_RIDE = "INSERT INTO Rides (DriverId, Time, PickupLocation, DropoffLocation, Status) VALUES (?, ?, ?, ?, ?)";
+    private static final String INSERT_RIDE = "INSERT INTO Rides (DriverId, Date, Time, PickupLocation, DropoffLocation, Status) VALUES (?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_RIDE_STATUS = "UPDATE Rides SET Status = ? WHERE RideId = ?";
     private static final String DELETE_RIDE = "DELETE FROM Rides WHERE RideId = ?";
 
@@ -32,7 +30,8 @@ public class RidesDAO {
                 ride = new Ride();
                 ride.setRideId(resultSet.getInt("RideId"));
                 ride.setDriverId(resultSet.getInt("DriverId"));
-                ride.setTime(resultSet.getTime("Time"));
+                ride.setDate(resultSet.getDate("Date")); // Assuming Date is of type java.sql.Date
+                ride.setTime(resultSet.getTime("Time")); // Assuming Time is of type java.sql.Time
                 ride.setPickupLocation(resultSet.getString("PickupLocation"));
                 ride.setDropoffLocation(resultSet.getString("DropoffLocation"));
                 ride.setStatus(resultSet.getString("Status"));
@@ -57,6 +56,7 @@ public class RidesDAO {
                 Ride ride = new Ride();
                 ride.setRideId(resultSet.getInt("RideId"));
                 ride.setDriverId(resultSet.getInt("DriverId"));
+                ride.setDate(resultSet.getDate("Date"));
                 ride.setTime(resultSet.getTime("Time"));
                 ride.setPickupLocation(resultSet.getString("PickupLocation"));
                 ride.setDropoffLocation(resultSet.getString("DropoffLocation"));
@@ -74,7 +74,7 @@ public class RidesDAO {
         List<Ride> resultList = new ArrayList<>();
 
         String SEARCH_RIDES_QUERY = "SELECT rideId, driverId, users.name, rides.time, " +
-                "pickupLocation, dropoffLocation, status FROM rides, users " +
+                "rides.date, pickupLocation, dropoffLocation, status FROM rides, users " +
                 "WHERE rides.driverId = users.userId AND dropoffLocation LIKE ? OR time LIKE ?";
 
         try (Connection connection = DatabaseUtility.getConnection();
@@ -107,12 +107,12 @@ public class RidesDAO {
     public boolean insertRide(Ride ride) {
         try (Connection connection = DatabaseUtility.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_RIDE)) {
-
             preparedStatement.setInt(1, ride.getDriverId());
-            preparedStatement.setTime(2, ride.getTime());
-            preparedStatement.setString(3, ride.getPickupLocation());
-            preparedStatement.setString(4, ride.getDropoffLocation());
-            preparedStatement.setString(5, ride.getStatus());
+            preparedStatement.setDate(2, ride.getDate()); // Set the Date
+            preparedStatement.setTime(3, ride.getTime()); // Set the Time
+            preparedStatement.setString(4, ride.getPickupLocation());
+            preparedStatement.setString(5, ride.getDropoffLocation());
+            preparedStatement.setString(6, ride.getStatus());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

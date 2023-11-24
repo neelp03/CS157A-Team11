@@ -1,6 +1,7 @@
 package com.example.models;
 
 import java.util.Objects;
+import java.sql.Date;
 import java.sql.Time;
 
 public class Ride {
@@ -8,10 +9,11 @@ public class Ride {
     private int rideId;
     private int driverId;
     private String driverName;
-    private Time time;
     private String pickupLocation;
     private String dropoffLocation;
     private String status;
+    private Date date;
+    private Time time;
 
     // Default Constructor
     public Ride() {}
@@ -50,14 +52,6 @@ public class Ride {
         this.driverName = driverName;
     }
 
-    public Time getTime() {
-        return time;
-    }
-
-    public void setTime(Time time) {
-        this.time = time;
-    }
-
     public String getPickupLocation() {
         return pickupLocation;
     }
@@ -81,6 +75,22 @@ public class Ride {
     public void setStatus(String status) {
         this.status = status;
     }
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Time getTime() {
+        return time;
+    }
+
+    public void setTime(Time time) {
+        this.time = time;
+    }
+
 
     // equals(), hashCode() and toString() methods
 
