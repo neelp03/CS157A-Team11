@@ -83,12 +83,10 @@ public class Users {
 
     // equals(), hashCode() and toString() methods
 
-    @Override
-    public boolean equals(Object o) {
+
+    public boolean equals(Users o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Users users = (Users) o;
-        return userId == users.userId;
+        return userId == o.userId;
     }
 
     @Override

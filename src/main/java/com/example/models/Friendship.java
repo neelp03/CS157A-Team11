@@ -1,24 +1,22 @@
 package com.example.models;
 
-import java.util.Objects;
-
 public class Friendship {
-
     private int friendshipId;
     private int studentId1;
     private int studentId2;
+    private String status;
 
-    // Default Constructor
+    // Constructors
     public Friendship() {}
 
-    // Constructor with all attributes
-    public Friendship(int friendshipId, int studentId1, int studentId2) {
+    public Friendship(int friendshipId, int studentId1, int studentId2, String status) {
         this.friendshipId = friendshipId;
         this.studentId1 = studentId1;
         this.studentId2 = studentId2;
+        this.status = status;
     }
 
-    // Getters and Setters
+    // Getters and setters
     public int getFriendshipId() {
         return friendshipId;
     }
@@ -43,27 +41,12 @@ public class Friendship {
         this.studentId2 = studentId2;
     }
 
-    // equals(), hashCode() and toString() methods
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Friendship that = (Friendship) o;
-        return friendshipId == that.friendshipId;
+    public String getStatus() {
+        return status;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(friendshipId);
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return "Friendship{" +
-                "friendshipId=" + friendshipId +
-                ", studentId1=" + studentId1 +
-                ", studentId2=" + studentId2 +
-                '}';
-    }
 }
