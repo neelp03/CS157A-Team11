@@ -13,11 +13,11 @@ import java.util.List;
 public class RideHistoryDAO {
 
     private static final String GET_RIDE_HISTORY_BY_USER_ID =
-            "SELECT Rides.RideId, 'Offered' AS Type, Rides.Time AS Date, Rides.PickupLocation, Rides.DropoffLocation " +
+            "SELECT Rides.RideId, 'Offered' AS Type, Rides.date AS Date, Rides.PickupLocation, Rides.DropoffLocation " +
                     "FROM Rides " +
                     "WHERE Rides.DriverId = ? " +
                     "UNION " +
-                    "SELECT Rides.RideId, 'Taken' AS Type, Rides.Time AS Date, Rides.PickupLocation, Rides.DropoffLocation " +
+                    "SELECT Rides.RideId, 'Taken' AS Type, Rides.date AS Date, Rides.PickupLocation, Rides.DropoffLocation " +
                     "FROM Rides " +
                     "INNER JOIN Requests ON Rides.RideId = Requests.RideId " +
                     "WHERE Requests.PassengerId = ?";
@@ -35,7 +35,7 @@ public class RideHistoryDAO {
                 RideHistory rideHistory = new RideHistory();
                 rideHistory.setRideId(resultSet.getInt("RideId"));
                 rideHistory.setType(resultSet.getString("Type"));
-                rideHistory.setDate(resultSet.getTime("Date"));
+                rideHistory.setDate(resultSet.getDate("Date"));
                 if ("Offered".equals(rideHistory.getType())) {
                     // For offered rides, set pickup and dropoff locations
                     rideHistory.setPickupLocation(getPickupLocation(rideHistory.getRideId()));
