@@ -26,12 +26,9 @@
         <li><a href="search.jsp">Search</a></li>
         <li><a href="profile.jsp">Profile</a></li>
         <li><a href="logout.jsp">Logout</a></li>
-
+        <li><a href="notifications.jsp"><i class="fa fa-bell"></i></a></li>
         <li class="welcome-message">Welcome, <%= loggedInUser.getName() %>!</li>
-        <li class="notification-icon" id="notificationIcon">
-            <a href="notifications.jsp"><i class="fa fa-bell"></i></a>
-            <span id="notificationCount"></span>
-        </li>
+
         <% } %>
     </ul>
 </div>
